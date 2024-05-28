@@ -1,39 +1,54 @@
+import { nanoid } from 'nanoid';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../redux/contactsSlice';
+
 import '../index.css';
-export const ContactForm = ({ saveName, saveNumber, saveState }) => {
-  const handleSubmit = event => {
-    event.preventDefault();
-    saveState();
+const ContactForm = () => {
+  const dispatch = useDispatch();
+
+  const formSubmit = evt => {
+    evt.preventDefault();
+
+    const name = evt.target.name.value;
+    const number = evt.target.number.value;
+    const id = nanoid();
+
+    const newContact = {
+      id: id,
+      name: name,
+      number: number,
+    };
+
+    dispatch(addContact(newContact));
+    evt.target.reset();
   };
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
-      <div className="form-container">
-        <p>Name</p>
+    <div>
+      <h2>Phonebook</h2>
+      <form onSubmit={formSubmit}>
+        <label>Name</label>
         <input
-          className="input"
           type="text"
           name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' \\-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          onChange={saveName}
+          placeholder="Enter name"
           required
         />
-        <p className="paragraph">Number</p>
+        <label>Number</label>
         <input
-          className="input"
           type="tel"
           name="number"
-          pattern="\\+?\\d{1,4}?[ .\\-\\s]?\\(?\\d{1,3}?\\)?[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,9}"
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          onChange={saveNumber}
+          placeholder="Enter phone number"
           required
         />
-      </div>
-      <div>
-        <button className="submit-button" type="submit">
-          Add Contact
-        </button>
-      </div>
-    </form>
+        <button type="submit">Add contact</button>
+      </form>
+    </div>
   );
 };
+
+export default ContactForm;
