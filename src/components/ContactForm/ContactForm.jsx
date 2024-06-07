@@ -1,9 +1,8 @@
 import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
-import { addContact } from '../redux/contactsSlice';
+import { addContact } from '../../store/contactsSlice';
 
-import '../index.css';
-const ContactForm = () => {
+export const ContactForm = () => {
   const dispatch = useDispatch();
 
   const formSubmit = evt => {
